@@ -15,9 +15,9 @@
         mocha.setup('bdd');
         window.assert = chai.assert;
 
-        await import('../tests/Account-test');
-        await import('../tests/User-test');
-        await import('../tests/bank-test');
+        await import('../tests/Account-test.js');
+        await import('../tests/User-test.js');
+        await import('../tests/bank-test.js');
 
         mocha.run();
     </script>

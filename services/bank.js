@@ -2,7 +2,7 @@
 
 import { User } from '../models/User.js';
 import { Account } from '../models/Account.js';
-import { AccountNotFoundError } from '../utils/errors.js';
+import { AccountNotFoundError, BankError } from '../utils/errors.js';
 
 export class Bank {
     constructor() {
@@ -27,5 +27,14 @@ export class Bank {
             throw new AccountNotFoundError('Аккаунт не найден!');
         }
         return this.accounts.get(id);
+    }
+
+    deposit(accountId, amount) {
+        let account = this.getAccount(accountId);
+        if( amount <= 0 ) {
+            throw new BankError('Сумма должна быть больше 0!');
+        }
+        account.balance += amount;
+        return account;
     }
 }

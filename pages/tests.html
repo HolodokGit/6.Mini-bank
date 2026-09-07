@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../lib/mocha.css">
+    <script src="../lib/chai.js"></script>
+    <script src="../lib/mocha.js"></script>
+</head>
+<body>
+    <div id="mocha"></div>
+
+    <script type="module">
+        mocha.setup('bdd');
+        window.assert = chai.assert;
+
+        await import('../tests/Account-test');
+        await import('../tests/User-test');
+        await import('../tests/bank-test');
+
+        mocha.run();
+    </script>
+</body>
+</html>

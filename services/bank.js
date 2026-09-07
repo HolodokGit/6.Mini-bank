@@ -2,7 +2,7 @@
 
 import { User } from '../models/User.js';
 import { Account } from '../models/Account.js';
-import { AccountNotFoundError, BankError } from '../utils/errors.js';
+import { AccountNotFoundError, BankError, InsufficientFundsError } from '../utils/errors.js';
 
 export class Bank {
     constructor() {
@@ -35,6 +35,17 @@ export class Bank {
             throw new BankError('Сумма должна быть больше 0!');
         }
         account.balance += amount;
+        return account;
+    }
+
+    withdraw(accountId, amount) {
+        let account = this.getAccount(accountId);
+        if( amount <= 0 ) {
+            throw new BankError('Сумма должна быть положительной');
+        } else if ( amount > account.balance ) {
+            throw new InsufficientFundsError('Недостаточно средств');
+        }
+        account.balance -= amount;
         return account;
     }
 }

@@ -37,6 +37,16 @@ export class Bank {
         return account.history;
     }
 
+    *historyGenerator(accountId) {
+        if(!this.accounts.has(accountId)) {
+            throw new AccountNotFoundError('Аккаунт не найден!');
+        }
+        let account = this.getAccount(accountId);
+        for( let entry of account.history ) {
+            yield entry;
+        }
+    }
+
     transfer(fromId, toId, amount) {
         if(!this.accounts.has(fromId)) {
             throw new AccountNotFoundError('Аккаунт отправителя не найден!');

@@ -4,6 +4,7 @@ import { User } from '../models/User.js';
 import { Account } from '../models/Account.js';
 import { AccountNotFoundError, BankError, InsufficientFundsError } from '../utils/errors.js';
 import { delay } from '../utils/delay.js';
+import { log } from '../utils/logger.js';
 
 export class Bank {
     constructor() {
@@ -77,6 +78,8 @@ export class Bank {
         toAccount.balance += amount;
         toAccount.addToHistory(`Зачисление средств: ${amount}\nСчёт отправителя: ${fromAccount.id}`);
 
+        console.log(log('Перевод', `Перевод от ${fromId} на счёт ${toId} на сумму ${amount}`));
+
         return {
             from: fromAccount,
             to: toAccount,
@@ -91,6 +94,7 @@ export class Bank {
         }
         account.balance += amount;
         account.addToHistory(`На счет ${account.name} зачисленно ${amount}\nОстаток: ${account.balance}`);
+        console.log(log('Пополнение', `${amount} на счет ${accountId}`));
         return account;
     }
 
@@ -104,6 +108,7 @@ export class Bank {
         }
         account.balance -= amount;
         account.addToHistory(`Со счета "${account.name}" списано ${amount}\nОстаток: ${account.balance}`);
+        console.log(log('Списание', `${amount} со счета ${accountId}`));
         return account;
     }
 }

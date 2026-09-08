@@ -50,8 +50,6 @@ describe("Bank", function() {
 
     it('Ошибка "аккаунт не найден"', function() {
         let bank = new Bank();
-        let user = bank.createUser('John');
-        let account = bank.createAccount(user, 'Основной');
         assert.throws(
             () => bank.getAccount('cdsacsda'),
             AccountNotFoundError

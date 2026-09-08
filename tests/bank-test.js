@@ -55,4 +55,23 @@ describe("Bank", function() {
             AccountNotFoundError
         );
     });
+
+    it('История пополняется', function() {
+        let bank = new Bank();
+        let user = bank.createUser('John');
+        let account = bank.createAccount(user, 'Основной');
+        bank.deposit(account.id, 500);
+        assert.equal(account.history.length, 1);
+    });
+
+    it('Перевод между счетами', function() {
+        let bank = new Bank();
+        let user = bank.createUser('John');
+        let account1 = bank.createAccount(user, 'Основной');
+        let account2 = bank.createAccount(user, 'Накопительный');
+        bank.deposit(account1.id, 500);
+        bank.transfer(account1.id, account2.id, 300);
+        assert.equal(account1.balance, 200);
+        assert.equal(account2.balance, 300);
+    });
 });

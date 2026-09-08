@@ -22,11 +22,19 @@ export class Bank {
         return account;
     }
 
-    getAccount(id) {
-        if(!this.accounts.has(id)) {
+    getAccount(accountId) {
+        if(!this.accounts.has(accountId)) {
             throw new AccountNotFoundError('Аккаунт не найден!');
         }
-        return this.accounts.get(id);
+        return this.accounts.get(accountId);
+    }
+
+    getHistory(accountId) {
+        if(!this.accounts.has(accountId)) {
+            throw new AccountNotFoundError('Аккаунт не найден!');
+        }
+        let account = this.accounts.get(accountId);
+        return account.history;
     }
 
     deposit(accountId, amount) {
@@ -35,6 +43,7 @@ export class Bank {
             throw new BankError('Сумма должна быть больше 0!');
         }
         account.balance += amount;
+        account.addToHistory(`На счет ${account.name} зачисленно ${amount}\nОстаток: ${account.balance}`);
         return account;
     }
 
@@ -46,6 +55,7 @@ export class Bank {
             throw new InsufficientFundsError('Недостаточно средств');
         }
         account.balance -= amount;
+        account.addToHistory(`Со счета "${account.name}" списано ${amount}\nОстаток: ${account.balance}`);
         return account;
     }
 }

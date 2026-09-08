@@ -8,5 +8,10 @@ export class Account {
         this.name = name;
         this.id = generateId();
         this.balance = 0;
+        this.history = [];
+    }
+
+    addToHistory(entry) {
+        this.history.push(entry);
     }
 }

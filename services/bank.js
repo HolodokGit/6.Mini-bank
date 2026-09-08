@@ -33,8 +33,39 @@ export class Bank {
         if(!this.accounts.has(accountId)) {
             throw new AccountNotFoundError('Аккаунт не найден!');
         }
-        let account = this.accounts.get(accountId);
+        let account = this.getAccount(accountId);
         return account.history;
+    }
+
+    transfer(fromId, toId, amount) {
+        if(!this.accounts.has(fromId)) {
+            throw new AccountNotFoundError('Аккаунт отправителя не найден!');
+        }
+
+        if(!this.accounts.has(toId)) {
+            throw new AccountNotFoundError('Аккаунт получаателя не найден!');
+        }
+
+        if( amount <= 0 ) {
+            throw new BankError('Сумма должна быть положительной');
+        }
+
+        let fromAccount = this.getAccount(fromId);
+        let toAccount = this.getAccount(toId);
+
+        if( fromAccount.balance < amount ) {
+            throw new InsufficientFundsError('Недостаточно средств');
+        }
+
+        fromAccount.balance -= amount;
+        fromAccount.addToHistory(`Перевод на сумму ${amount}\nСчет получателя: ${toAccount.id}`);
+        toAccount.balance += amount;
+        toAccount.addToHistory(`Зачисление средств: ${amount}\nСчёт отправителя: ${fromAccount}`);
+
+        return {
+            from: fromAccount,
+            to: toAccount,
+        }
     }
 
     deposit(accountId, amount) {

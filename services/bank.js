@@ -70,7 +70,7 @@ export class Bank {
         fromAccount.balance -= amount;
         fromAccount.addToHistory(`Перевод на сумму ${amount}\nСчет получателя: ${toAccount.id}`);
         toAccount.balance += amount;
-        toAccount.addToHistory(`Зачисление средств: ${amount}\nСчёт отправителя: ${fromAccount}`);
+        toAccount.addToHistory(`Зачисление средств: ${amount}\nСчёт отправителя: ${fromAccount.id}`);
 
         return {
             from: fromAccount,

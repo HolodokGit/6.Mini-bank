@@ -7,7 +7,7 @@ export class Account {
         this.owner = owner;
         this.name = name;
         this.id = generateId();
-        this.balance = 0;
+        this._balance = 0;
         this.history = [];
     }
 
@@ -22,5 +22,9 @@ export class Account {
             balance: this.balance,
             owner: this.owner.name,
         })
+    }
+
+    get balance(){
+        return this._balance;
     }
 }

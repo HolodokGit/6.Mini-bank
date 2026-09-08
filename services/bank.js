@@ -69,13 +69,13 @@ export class Bank {
         let fromAccount = this.getAccount(fromId);
         let toAccount = this.getAccount(toId);
 
-        if( fromAccount.balance < amount ) {
+        if( fromAccount._balance < amount ) {
             throw new InsufficientFundsError('Недостаточно средств');
         }
 
-        fromAccount.balance -= amount;
+        fromAccount._balance -= amount;
         fromAccount.addToHistory(`Перевод на сумму ${amount}\nСчет получателя: ${toAccount.id}`);
-        toAccount.balance += amount;
+        toAccount._balance += amount;
         toAccount.addToHistory(`Зачисление средств: ${amount}\nСчёт отправителя: ${fromAccount.id}`);
 
         console.log(log('Перевод', `Перевод от ${fromId} на счёт ${toId} на сумму ${amount}`));
@@ -92,8 +92,8 @@ export class Bank {
         if( amount <= 0 ) {
             throw new BankError('Сумма должна быть больше 0!');
         }
-        account.balance += amount;
-        account.addToHistory(`На счет ${account.name} зачисленно ${amount}\nОстаток: ${account.balance}`);
+        account._balance += amount;
+        account.addToHistory(`На счет ${account.name} зачисленно ${amount}\nОстаток: ${account._balance}`);
         console.log(log('Пополнение', `${amount} на счет ${accountId}`));
         return account;
     }
@@ -103,11 +103,11 @@ export class Bank {
         let account = this.getAccount(accountId);
         if( amount <= 0 ) {
             throw new BankError('Сумма должна быть положительной');
-        } else if ( amount > account.balance ) {
+        } else if ( amount > account._balance ) {
             throw new InsufficientFundsError('Недостаточно средств');
         }
-        account.balance -= amount;
-        account.addToHistory(`Со счета "${account.name}" списано ${amount}\nОстаток: ${account.balance}`);
+        account._balance -= amount;
+        account.addToHistory(`Со счета "${account.name}" списано ${amount}\nОстаток: ${account._balance}`);
         console.log(log('Списание', `${amount} со счета ${accountId}`));
         return account;
     }

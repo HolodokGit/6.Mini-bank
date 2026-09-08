@@ -24,7 +24,7 @@ describe("Bank", function() {
         let user = bank.createUser('John');
         let account = bank.createAccount(user, 'Основной');
         await bank.deposit(account.id, 500);
-        assert.equal(account.balance, 500);
+        assert.equal(account._balance, 500);
     });
 
     it('Снятие', async function() {
@@ -33,7 +33,7 @@ describe("Bank", function() {
         let account = bank.createAccount(user, 'Основной');
         await bank.deposit(account.id, 500);
         await bank.withdraw(account.id, 200);
-        assert.equal(account.balance, 300);
+        assert.equal(account._balance, 300);
     });
 
     it('Ошибка "недостаточно средств"', async function() {
@@ -71,7 +71,7 @@ describe("Bank", function() {
         let account2 = bank.createAccount(user, 'Накопительный');
         await bank.deposit(account1.id, 500);
         await bank.transfer(account1.id, account2.id, 300);
-        assert.equal(account1.balance, 200);
-        assert.equal(account2.balance, 300);
+        assert.equal(account1._balance, 200);
+        assert.equal(account2._balance, 300);
     });
 });

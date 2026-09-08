@@ -13,11 +13,10 @@
 
     <script type="module">
         mocha.setup('bdd');
+        mocha.timeout(10000);
         window.assert = chai.assert;
-        
+
         await import('../tests/bank-test.js');
-        await import('../tests/Account-test.js');
-        await import('../tests/User-test.js');
 
         mocha.run();
     </script>

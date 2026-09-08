@@ -19,31 +19,33 @@ describe("Bank", function() {
         assert.equal(account.name, 'Основной');
     });
 
-    it('Пополнение', function() {
+    it('Пополнение', async function() {
         let bank = new Bank();
         let user = bank.createUser('John');
         let account = bank.createAccount(user, 'Основной');
-        bank.deposit(account.id, 500);
+        await bank.deposit(account.id, 500);
         assert.equal(account.balance, 500);
     });
 
-    it('Снятие', function() {
+    it('Снятие', async function() {
         let bank = new Bank();
         let user = bank.createUser('John');
         let account = bank.createAccount(user, 'Основной');
-        bank.deposit(account.id, 500);
-        bank.withdraw(account.id, 200);
+        await bank.deposit(account.id, 500);
+        await bank.withdraw(account.id, 200);
         assert.equal(account.balance, 300);
     });
 
-    it('Ошибка "недостаточно средств"', function() {
+    it('Ошибка "недостаточно средств"', async function() {
         let bank = new Bank();
         let user = bank.createUser('John');
         let account = bank.createAccount(user, 'Основной');
-        assert.throws(
-            () => bank.withdraw(account.id, 200),
-            InsufficientFundsError
-        );
+        try {
+            await bank.withdraw(account.id, 200);
+            assert.fail('Должна была быть ошибка!');
+        } catch(error) {
+            assert.instanceOf(error, InsufficientFundsError);
+        }
     });
 
     it('Ошибка "аккаунт не найден"', function() {
@@ -56,21 +58,21 @@ describe("Bank", function() {
         );
     });
 
-    it('История пополняется', function() {
+    it('История пополняется', async function() {
         let bank = new Bank();
         let user = bank.createUser('John');
         let account = bank.createAccount(user, 'Основной');
-        bank.deposit(account.id, 500);
+        await bank.deposit(account.id, 500);
         assert.equal(account.history.length, 1);
     });
 
-    it('Перевод между счетами', function() {
+    it('Перевод между счетами', async function() {
         let bank = new Bank();
         let user = bank.createUser('John');
         let account1 = bank.createAccount(user, 'Основной');
         let account2 = bank.createAccount(user, 'Накопительный');
-        bank.deposit(account1.id, 500);
-        bank.transfer(account1.id, account2.id, 300);
+        await bank.deposit(account1.id, 500);
+        await bank.transfer(account1.id, account2.id, 300);
         assert.equal(account1.balance, 200);
         assert.equal(account2.balance, 300);
     });

@@ -3,6 +3,7 @@
 import { User } from '../models/User.js';
 import { Account } from '../models/Account.js';
 import { AccountNotFoundError, BankError, InsufficientFundsError } from '../utils/errors.js';
+import { delay } from '../utils/delay.js';
 
 export class Bank {
     constructor() {
@@ -47,19 +48,23 @@ export class Bank {
         }
     }
 
-    transfer(fromId, toId, amount) {
+    async transfer(fromId, toId, amount) {
         if(!this.accounts.has(fromId)) {
+            await delay(100);
             throw new AccountNotFoundError('Аккаунт отправителя не найден!');
         }
 
         if(!this.accounts.has(toId)) {
+            await delay(150);
             throw new AccountNotFoundError('Аккаунт получаателя не найден!');
         }
 
         if( amount <= 0 ) {
+            await delay(200);
             throw new BankError('Сумма должна быть положительной');
         }
 
+        await delay(300);
         let fromAccount = this.getAccount(fromId);
         let toAccount = this.getAccount(toId);
 
@@ -78,7 +83,8 @@ export class Bank {
         }
     }
 
-    deposit(accountId, amount) {
+    async deposit(accountId, amount) {
+        await delay(300);
         let account = this.getAccount(accountId);
         if( amount <= 0 ) {
             throw new BankError('Сумма должна быть больше 0!');
@@ -88,7 +94,8 @@ export class Bank {
         return account;
     }
 
-    withdraw(accountId, amount) {
+    async withdraw(accountId, amount) {
+        await delay(300);
         let account = this.getAccount(accountId);
         if( amount <= 0 ) {
             throw new BankError('Сумма должна быть положительной');

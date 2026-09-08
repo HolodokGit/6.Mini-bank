@@ -111,4 +111,12 @@ export class Bank {
         console.log(log('Списание', `${amount} со счета ${accountId}`));
         return account;
     }
+
+    exportAccounts() {
+        let result = [];
+        for( let account of this.accounts.values() ) {
+            result.push(account.toJSON());
+        }
+        return result;
+    }
 }

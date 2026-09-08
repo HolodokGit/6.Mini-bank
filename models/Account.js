@@ -14,4 +14,13 @@ export class Account {
     addToHistory(entry) {
         this.history.push(entry);
     }
+
+    toJSON() {
+        return JSON.stringify({
+            id: this.id,
+            name: this.name,
+            balance: this.balance,
+            owner: this.owner.name,
+        })
+    }
 }

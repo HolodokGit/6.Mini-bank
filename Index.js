@@ -21,6 +21,12 @@ async function main() {
     for( let entry of bank.historyGenerator(account2.id)) {
         console.log(entry);
     }
+
+    console.log('Счёт 1 в JSON');
+    console.log(account1.toJSON());
+
+    console.log('Все счета:');
+    console.log(bank.exportAccounts()); 
 }
 
 main();
